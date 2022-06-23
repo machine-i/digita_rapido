@@ -72,7 +72,7 @@ function tecla() {
             console.log('foi');
 
         }
-    }, 500); // setInterval fica se sobrescrevendo e contando cada vez mais rápido a cada click no ESPAÇO
+    }, 500); // setInterval fica se sobrescrevendo e contando cada vez mais rápido a cada click no ESPAÇO.
 
     digitado.addEventListener('blur', () => {
         clearInterval(v);
