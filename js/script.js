@@ -1,7 +1,10 @@
-let digitado = document.querySelector('#caixa-digita');
-let palavrasTela = document.querySelector('#palavrasTela');
+const digitado = document.querySelector('#caixa-digita');
+const palavrasTela = document.querySelector('#palavrasTela');
+const tempoTela = document.querySelector('#tempoTela');
 let palavrasArray = new Array();
 let indicePalavra = 0;
+let v;
+let score = 0;
 
 function limpar(d) { d.value = ''; tecla() }
 
@@ -54,25 +57,28 @@ function getPalavras() {
     digitado.focus();
 }
 
+function verifica() {
+    if (digitado.value == palavrasArray[indicePalavra]) { score++ }
+    if (digitado.value.trim()) indicePalavra++;
+}
+
 function tecla() {
-    document.addEventListener('keyup', event => {
-        if (event.key == ' ') {
-            if (digitado.value.trim()) indicePalavra++;
+
+    digitado.addEventListener('input', event => {
+        if (event.data == ' ') {
+            verifica();
             clearInterval(v);
             limpar(digitado);
         }
-    });
+    }, false);
 
-    console.log(palavrasArray[indicePalavra]);
-
-    let v = setInterval(() => {
+    v = setInterval(() => {
         console.log('ta funfando');
 
         if (digitado.value == palavrasArray[indicePalavra]) {
             console.log('foi');
-
         }
-    }, 500); // setInterval fica se sobrescrevendo e contando cada vez mais rápido a cada click no ESPAÇO.
+    }, 500);
 
     digitado.addEventListener('blur', () => {
         clearInterval(v);
