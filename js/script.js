@@ -1,21 +1,81 @@
 let digitado = document.querySelector('#caixa-digita');
-let palavras = ['machine', 'segundo'];
-
-let p1 = document.querySelector('#p1');
-let p2 = document.querySelector('#p2');
+let palavrasTela = document.querySelector('#palavrasTela');
+let palavrasArray = new Array();
+let indicePalavra = 0;
 
 function limpar(d) { d.value = ''; tecla() }
 
-function tecla() {
-    document.addEventListener('keydown', event => {
-        if (event.key == ' ') {
-            limpar(digitado);
-        }
-    })
+function embaralhar(arr) {
+    for (let i = arr.length; i; i--) {
+        const iRandom = Math.floor(Math.random() * i);
+        const item = arr[i - 1];
+        arr[i - 1] = arr[iRandom];
+        arr[iRandom] = item;
+    }
 }
 
-const verifica = setInterval(() => {
-    if (palavras.indexOf(digitado.value) != -1 && !p1.classList.contains('text-info')) {
-        p1.classList += 'text-info';
+function getPalavras() {
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.open('GET', 'http://127.0.0.1:5500/json/palavras.json');
+
+    xmlHttp.onreadystatechange = () => {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            let jsonPalavras = xmlHttp.responseText;
+
+            let jsonPalavrasObj = JSON.parse(jsonPalavras);
+
+            for (let p in jsonPalavrasObj.palavras) {
+                palavrasArray.push(jsonPalavrasObj.palavras[p]);
+            }
+
+            embaralhar(palavrasArray);
+
+            if (palavrasTela.hasChildNodes()) {
+                while (palavrasTela.firstChild) {
+                    palavrasTela.removeChild(palavrasTela.firstChild);
+                }
+            }
+
+            for (let i in palavrasArray) {
+                let span = document.createElement('span');
+                span.className = 'm-1';
+                span.innerHTML = palavrasArray[i];
+
+                palavrasTela.appendChild(span);
+            }
+
+        } else if (xmlHttp.readyState == 4 && xmlHttp.status == 404) {
+            document.querySelector('#palavrasTela').innerHTML = `Houve algum problema, tente novamente mais tarde! ʕ•ᴥ•ʔ`;
+        }
     }
-}, 10)
+
+    xmlHttp.send();
+
+    digitado.focus();
+}
+
+function tecla() {
+    document.addEventListener('keyup', event => {
+        if (event.key == ' ') {
+            if (digitado.value.trim()) indicePalavra++;
+            clearInterval(v);
+            limpar(digitado);
+        }
+    });
+
+    console.log(palavrasArray[indicePalavra]);
+
+    let v = setInterval(() => {
+        console.log('ta funfando');
+
+        if (digitado.value == palavrasArray[indicePalavra]) {
+            console.log('foi');
+
+        }
+    }, 500); // setInterval fica se sobrescrevendo e contando cada vez mais rápido a cada click no ESPAÇO
+
+    digitado.addEventListener('blur', () => {
+        clearInterval(v);
+    });
+
+}

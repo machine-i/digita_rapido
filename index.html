@@ -14,12 +14,25 @@
 <body>
 
     <div class="container mt-2">
-        <div class="bg-dark text-light mb-3 p-2 float-left">
-            <span id="p1" class="">machine |</span>
-            <span id="p2" class="">segundo</span>
+
+        <div class="row bg-dark text-light mb-3 p-2 float-left">
+            <div class="col" id="palavrasTela">
+
+            </div>
         </div>
-        <input id="caixa-digita" type="text" placeholder="escreva rápido!!!" onkeydown="tecla()" autofocus
-            spellcheck="true">
+
+        <div class="row">
+            <div class="col">
+                <input id="caixa-digita" type="text" placeholder="escreva rápido!!!" onfocus="tecla()"
+                    spellcheck="true">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-info mt-2" onclick="getPalavras()">Começar</button>
+            </div>
+        </div>
 
     </div>
 
