@@ -1,3 +1,5 @@
 # digita_rapido
 
-Um site semelhante ao 10fastfingers (ainda não finalizado).
+Um site inspirado no 10fastfingers (ainda na versão beta).
+
+Você pode conferir através desse link: https://machine-i.github.io/digita_rapido/
