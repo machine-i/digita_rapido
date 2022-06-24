@@ -8,7 +8,7 @@ let score = 0;
 let clickBotao = 0, clickTecla = 0;
 let tempoMax = 0, tempo = 0, fim = 0;
 
-function limpar(d) { d.value = ''; }
+function limpar(d) { d.value = '' }
 
 function embaralhar(arr) {
     for (let i = arr.length; i; i--) {
@@ -61,6 +61,7 @@ function getPalavras() {
     tempoMax = 30;
     tempo = 0
 
+    limpar(digitado);
     digitado.focus();
 }
 
@@ -75,6 +76,8 @@ function verifica() {
 }
 
 function tecla() {
+
+    console.log('função tecla');
 
     digitado.addEventListener('input', event => {
         clickTecla = 1;
@@ -101,6 +104,7 @@ function tecla() {
 }
 
 function tempoGame() {
+    console.log('função tempoGame');
     if (clickBotao && clickTecla) {
         tempo++
         tempoTela.innerHTML = tempoMax - tempo;
@@ -108,6 +112,6 @@ function tempoGame() {
 }
 
 let contarTempo = setInterval(() => {
-    console.log('contando')
+    // console.log('contando')
     tempoGame();
 }, 1000)
