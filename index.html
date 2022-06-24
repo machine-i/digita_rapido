@@ -16,16 +16,14 @@
     <div class="container mt-2">
 
         <div class="row bg-dark text-light mb-3 p-2 float-left">
-            <div class="col" id="palavrasTela">
-
-            </div>
+            <div class="col" id="palavrasTela"></div>
         </div>
 
         <div class="row">
             <div class="col border">
                 <div class="input-group input-group-mb">
                     <input class="form-control" id="caixa-digita" type="text" placeholder="escreva rápido!!!"
-                        onfocus="tecla()" spellcheck="true">
+                        onkeypress="tecla()" spellcheck="true">
                     <div class="input-group-append">
                         <span class="input-group-text" id="tempoTela">tempo</span>
                     </div>

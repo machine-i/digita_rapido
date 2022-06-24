@@ -5,8 +5,10 @@ let palavrasArray = new Array();
 let indicePalavra = 0;
 let v;
 let score = 0;
+let clickBotao = 0, clickTecla = 0;
+let tempoMax = 0, tempo = 0, fim = 0;
 
-function limpar(d) { d.value = ''; tecla() }
+function limpar(d) { d.value = ''; }
 
 function embaralhar(arr) {
     for (let i = arr.length; i; i--) {
@@ -18,6 +20,12 @@ function embaralhar(arr) {
 }
 
 function getPalavras() {
+
+    while (palavrasTela.firstChild && palavrasArray.length > 0) {
+        palavrasTela.removeChild(palavrasTela.firstChild);
+        palavrasArray.pop();
+    }
+
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open('GET', 'http://127.0.0.1:5500/json/palavras.json');
 
@@ -32,12 +40,6 @@ function getPalavras() {
             }
 
             embaralhar(palavrasArray);
-
-            if (palavrasTela.hasChildNodes()) {
-                while (palavrasTela.firstChild) {
-                    palavrasTela.removeChild(palavrasTela.firstChild);
-                }
-            }
 
             for (let i in palavrasArray) {
                 let span = document.createElement('span');
@@ -54,34 +56,58 @@ function getPalavras() {
 
     xmlHttp.send();
 
+    clickBotao = 1;
+    fim = 0;
+    tempoMax = 30;
+    tempo = 0
+
     digitado.focus();
 }
 
 function verifica() {
-    if (digitado.value == palavrasArray[indicePalavra]) { score++ }
-    if (digitado.value.trim()) indicePalavra++;
+    if (digitado.value == palavrasArray[indicePalavra]) { score += 1 }
+    if (digitado.value.trim()) { indicePalavra++ }
+    if (indicePalavra == palavrasArray.length) {
+        clearInterval(contarTempo);
+        fim = 1;
+        console.log(score);
+    }
 }
 
 function tecla() {
 
     digitado.addEventListener('input', event => {
+        clickTecla = 1;
+
         if (event.data == ' ') {
             verifica();
-            clearInterval(v);
+            // clearInterval(v);
             limpar(digitado);
         }
     }, false);
 
-    v = setInterval(() => {
-        console.log('ta funfando');
+    // if (!fim) {
+    //     v = setInterval(() => {
+    //         console.log('ta funfando');
 
-        if (digitado.value == palavrasArray[indicePalavra]) {
-            console.log('foi');
-        }
-    }, 500);
+    //         if (digitado.value == palavrasArray[indicePalavra]) { console.log('foi') }
+    //     }, 500);
+    // }
 
-    digitado.addEventListener('blur', () => {
-        clearInterval(v);
-    });
+    // digitado.addEventListener('blur', () => {
+    //     clearInterval(v);
+    // });
 
 }
+
+function tempoGame() {
+    if (clickBotao && clickTecla) {
+        tempo++
+        tempoTela.innerHTML = tempoMax - tempo;
+    }
+}
+
+let contarTempo = setInterval(() => {
+    console.log('contando')
+    tempoGame();
+}, 1000)
